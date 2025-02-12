@@ -17,6 +17,8 @@ while True:
     print(f"Connected to {address[0]} on port {address[1]}\n")
 
     request_data_str = client_socket.recv(2048).decode()
+    print(request_data_str)
+
     parsed_request_data = parse_request(request_data_str)
     print(parsed_request_data)
 
