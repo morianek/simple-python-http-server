@@ -1,0 +1,16 @@
+### GET request to example server
+POST 127.0.0.1:8888
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "age": 30
+}
+
+###
+
+GET 127.0.0.1:8888
+###
+GET 127.0.0.1:8888/test
+###
+GET 127.0.0.1:8888/dasd
