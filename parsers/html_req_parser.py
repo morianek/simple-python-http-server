@@ -11,7 +11,6 @@ class Request:
 
 def parse_request(data):
     lines = data.split("\r\n")
-    print(lines[0])
     method, path, _ = lines[0].split(" ")
     headers = {}
     body = ""
@@ -24,10 +23,10 @@ def parse_request(data):
         headers[key] = value
     if cur_line < len(lines):
         body = lines[cur_line]
-
     if method == "GET":
         get_params = parse_get_params(path)
-        path = path[:path.find("?")]
+        if path.find("?") != -1:
+            path = path[:path.find("?")]
     else:
         get_params = None
 
