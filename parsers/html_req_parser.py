@@ -10,27 +10,32 @@ class Request:
         return f"{self.method} {self.path} {self.get_params}\n{self.headers} {f"\n{self.body}" if self.body else ""}"
 
 def parse_request(data):
-    lines = data.split("\r\n")
-    method, path, _ = lines[0].split(" ")
-    headers = {}
-    body = ""
-    cur_line = 0
-    for line in lines[1:]:
-        cur_line += 1
-        if line == "":
-            break
-        key, value = line.split(": ")
-        headers[key] = value
-    if cur_line < len(lines):
-        body = lines[cur_line]
-    if method == "GET":
-        get_params = parse_get_params(path)
-        if path.find("?") != -1:
-            path = path[:path.find("?")]
-    else:
-        get_params = None
+    try:
+        lines = data.split("\r\n")
+        method, path, _ = lines[0].split(" ")
+        headers = {}
+        body = ""
+        cur_line = 0
+        for line in lines[1:]:
+            cur_line += 1
+            if line == "":
+                break
+            key, value = line.split(": ")
+            headers[key] = value
+        if cur_line < len(lines):
+            body = lines[cur_line]
+        if method == "GET":
+            get_params = parse_get_params(path)
+            if path.find("?") != -1:
+                path = path[:path.find("?")]
+        else:
+            get_params = None
 
-    return Request(method, path, headers, body, get_params)
+        return Request(method, path, headers, body, get_params)
+
+    except Exception as e:
+        print(f"Exception {e} occurred")
+        return None
 
 def parse_get_params(path):
     start_index = path.find("?")

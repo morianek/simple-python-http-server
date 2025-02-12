@@ -12,6 +12,8 @@ def built_response(code, headers = None, body = ""):
         response += "OK\n"
     elif code == 404:
         response += "Not Found\n"
+    elif code == 400:
+        response += "Bad Request"
 
     for key, val in headers.items():
         response += f"{key}: {val}\n"

@@ -2,6 +2,8 @@ from server_html_files import get_default_file_body, get_not_found_body
 from html_response_builder import built_response
 
 def handle_request(request):
+    if request is None:
+        return built_response(code=400, body="<h1>400 bad request</h1>")
     if request.path == "/":
         return built_response(code = 200, body = get_default_file_body())
         # TODO zrobienie wyszukiwarki plików jeżeli nie ma default body
