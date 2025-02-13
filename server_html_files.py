@@ -22,3 +22,12 @@ def get_not_found_body():
         return file_body
     else:
         return "<h1>404 Not found</h1>"
+
+def get_specific_file_body(file_path):
+    path = "./" + config.path_to_http_dir + file_path
+    if os.path.isfile(path):
+        with open(path, 'r', encoding="utf-8") as f:
+            file_body = f.read()
+        return file_body
+    else:
+        return get_not_found_body()
