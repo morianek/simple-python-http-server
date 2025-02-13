@@ -1,4 +1,4 @@
-from server_html_files import get_default_file_body, get_not_found_body, get_specific_file_body
+from get_server_files_body import get_default_file_body, get_not_found_body, get_specific_file_body
 from html_response_builder import built_response
 
 def handle_request(request):
