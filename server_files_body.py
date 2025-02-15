@@ -1,12 +1,19 @@
 import os
 import re
 from functools import wraps
+from dataclasses import dataclass
 
 from config import get_response_config
+from data_handling_funcs import get_content_type_header
 
 config = get_response_config()
 
 VALID_FILENAME_REGEX = re.compile(r'^[\w\-. ]+$')
+
+@dataclass
+class FileBody:
+    body: str
+    body_type_header: dict
 
 def verify_path(func):
     @wraps(func)
@@ -29,7 +36,7 @@ def get_default_file_body():
         if os.path.isfile(file_path):
             with open(file_path, 'r', encoding="utf-8") as f:
                 file_body = f.read()
-            return file_body
+            return FileBody(file_body, get_content_type_header(file))
     return None
 
 def get_not_found_body():
@@ -37,9 +44,9 @@ def get_not_found_body():
     if os.path.isfile(path):
         with open(path, 'r', encoding="utf-8") as f:
             file_body = f.read()
-        return file_body
+        return FileBody(file_body, get_content_type_header(config.not_found_file))
     else:
-        return "<h1>404 Not found</h1>"
+        return FileBody("<h1>404 Not Found</h1>", "text/html; charset=utf-8")
 
 @verify_path
 def get_specific_file_body(file_path):
@@ -47,7 +54,7 @@ def get_specific_file_body(file_path):
     if os.path.isfile(path):
         with open(path, 'r', encoding="utf-8") as f:
             file_body = f.read()
-        return file_body
+        return FileBody(file_body, get_content_type_header(file_path))
     else:
         return get_not_found_body()
 
@@ -56,6 +63,15 @@ def get_internal_error_body():
     if os.path.isfile(path):
         with open(path, 'r', encoding="utf-8") as f:
             file_body = f.read()
-        return file_body
+        return FileBody(file_body, get_content_type_header(config.internal_error_file))
     else:
-        return "<h1>500 Internal Server Error</h1>"
+        return FileBody("<h1>500 Internal Server Error</hjson>", "text/html; charset=utf-8")
+
+def get_bad_request_body():
+    path = "./" + config.path_to_http_dir + config.bad_request_file
+    if os.path.isfile(path):
+        with open(path, 'r', encoding="utf-8") as f:
+            file_body = f.read()
+        return FileBody(file_body, get_content_type_header(config.bad_request_file))
+    else:
+        return FileBody("<h1>400 Bad Request</h1>", "text/html; charset=utf-8")

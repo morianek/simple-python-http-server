@@ -1,10 +1,16 @@
-def get_basic_headers():
-    return {"content-type": "text/html; charset=utf-8"}
+def get_basic_headers(body_len):
+    return {
+        "Server": "Kox server",
+        "Connection": "close",
+        "Content-Length": body_len,
+    }
 
 
 def built_response(code, headers = None, body = ""):
     if headers is None:
-        headers = get_basic_headers()
+        headers = get_basic_headers(len(body))
+    else:
+        headers.update(get_basic_headers(len(body)))
 
     response = f"HTTP/1.1 {code} "
 
@@ -19,6 +25,6 @@ def built_response(code, headers = None, body = ""):
         response += f"{key}: {val}\n"
     response += "\n"
 
-    response+=body
+    response += body
 
     return response.encode()
