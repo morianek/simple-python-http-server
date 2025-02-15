@@ -1,9 +1,12 @@
 import os
+import re
 from functools import wraps
 
 from config import get_response_config
 
 config = get_response_config()
+
+VALID_FILENAME_REGEX = re.compile(r'^[\w\-. ]+$')
 
 def verify_path(func):
     @wraps(func)
@@ -13,6 +16,10 @@ def verify_path(func):
 
         if not requested_path.startswith(base_path):
             return get_not_found_body()
+
+        if not VALID_FILENAME_REGEX.match(os.path.basename(requested_path)):
+            return get_not_found_body()
+
         return func(file_path, *args, **kwargs)
     return wrapper
 
