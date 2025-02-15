@@ -12,7 +12,7 @@ VALID_FILENAME_REGEX = re.compile(r'^[\w\-. ]+$')
 
 @dataclass
 class FileBody:
-    body: str
+    body: str | bytes
     body_type_header: dict
 
 def verify_path(func):
@@ -52,8 +52,11 @@ def get_not_found_body():
 def get_specific_file_body(file_path):
     path = "./" + config.path_to_http_dir + file_path
     if os.path.isfile(path):
-        with open(path, 'r', encoding="utf-8") as f:
+        with open(path, 'rb') as f:
             file_body = f.read()
+
+        if file_path.endswith(('.html', '.css', '.js', '.txt', '.json')):
+            file_body = file_body.decode('utf-8')
         return FileBody(file_body, get_content_type_header(file_path))
     else:
         return get_not_found_body()

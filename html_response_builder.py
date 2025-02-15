@@ -25,6 +25,9 @@ def built_response(code, headers = None, body = ""):
         response += f"{key}: {val}\n"
     response += "\n"
 
-    response += body
+    if isinstance(body, bytes):
+        response = response.encode() + body
+    else:
+        response += body
 
-    return response.encode()
+    return response.encode() if isinstance(body, str) else response
