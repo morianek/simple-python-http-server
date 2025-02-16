@@ -12,7 +12,7 @@ VALID_FILENAME_REGEX = re.compile(r'^[\w\-. ]+$')
 
 @dataclass
 class FileBody:
-    body: str | bytes
+    body: bytes
     body_type_header: dict
 
 def verify_path(func):
@@ -34,7 +34,7 @@ def get_default_file_body():
     for file in config.default_files:
         file_path = "./" + config.path_to_http_dir + file
         if os.path.isfile(file_path):
-            with open(file_path, 'r', encoding="utf-8") as f:
+            with open(file_path, 'rb') as f:
                 file_body = f.read()
             return FileBody(file_body, get_content_type_header(file))
     return None
@@ -42,11 +42,11 @@ def get_default_file_body():
 def get_not_found_body():
     path = "./" + config.path_to_http_dir + config.not_found_file
     if os.path.isfile(path):
-        with open(path, 'r', encoding="utf-8") as f:
+        with open(path, 'rb') as f:
             file_body = f.read()
         return FileBody(file_body, get_content_type_header(config.not_found_file))
     else:
-        return FileBody("<h1>404 Not Found</h1>", "text/html; charset=utf-8")
+        return FileBody(b"<h1>404 Not Found</h1>", {"Content-Type":"text/html; charset=utf-8"})
 
 @verify_path
 def get_specific_file_body(file_path):
@@ -55,8 +55,6 @@ def get_specific_file_body(file_path):
         with open(path, 'rb') as f:
             file_body = f.read()
 
-        if file_path.endswith(('.html', '.css', '.js', '.txt', '.json')):
-            file_body = file_body.decode('utf-8')
         return FileBody(file_body, get_content_type_header(file_path))
     else:
         return get_not_found_body()
@@ -64,17 +62,17 @@ def get_specific_file_body(file_path):
 def get_internal_error_body():
     path = "./" + config.path_to_http_dir + config.internal_error_file
     if os.path.isfile(path):
-        with open(path, 'r', encoding="utf-8") as f:
+        with open(path, 'rb') as f:
             file_body = f.read()
         return FileBody(file_body, get_content_type_header(config.internal_error_file))
     else:
-        return FileBody("<h1>500 Internal Server Error</hjson>", "text/html; charset=utf-8")
+        return FileBody(b"<h1>500 Internal Server Error</hjson>", {"Content-Type":"text/html; charset=utf-8"})
 
 def get_bad_request_body():
     path = "./" + config.path_to_http_dir + config.bad_request_file
     if os.path.isfile(path):
-        with open(path, 'r', encoding="utf-8") as f:
+        with open(path, 'rb') as f:
             file_body = f.read()
         return FileBody(file_body, get_content_type_header(config.bad_request_file))
     else:
-        return FileBody("<h1>400 Bad Request</h1>", "text/html; charset=utf-8")
+        return FileBody(b"<h1>400 Bad Request</h1>", {"Content-Type":"text/html; charset=utf-8"})
