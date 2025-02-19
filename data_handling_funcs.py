@@ -1,4 +1,4 @@
-def determine_content_type(file_name):
+def determine_content_type(file_name: str) -> str:
     if file_name.endswith(".html"):
         return "text/html; charset=utf-8"
     elif file_name.endswith(".css"):
@@ -26,5 +26,5 @@ def determine_content_type(file_name):
     else:
         return "application/octet-stream"
 
-def get_content_type_header(file_name):
+def get_content_type_header(file_name: str) -> dict:
     return {"Content-Type": determine_content_type(file_name)}

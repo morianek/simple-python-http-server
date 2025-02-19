@@ -1,4 +1,4 @@
-def get_basic_headers(body_len):
+def get_basic_headers(body_len: int):
     return {
         "Server": "Kox server",
         "Connection": "close",
@@ -6,7 +6,7 @@ def get_basic_headers(body_len):
     }
 
 
-def built_response(code, headers = None, body = ""):
+def built_response(code: int, headers: dict | None = None, body: bytes = b"") -> bytes:
     if headers is None:
         headers = get_basic_headers(len(body))
     else:
