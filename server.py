@@ -1,6 +1,6 @@
 import socket
 
-from parsers.html_req_parser import Request
+from parsers.html_req_parser import parse_request
 from config import get_server_config
 from request_handler import handle_request
 
@@ -19,7 +19,7 @@ while True:
     request_data_str = client_socket.recv(2048).decode()
     print(request_data_str)
 
-    parsed_request_data = Request(request_data_str)
+    parsed_request_data = parse_request(request_data_str)
     print(parsed_request_data)
 
     server_response = handle_request(parsed_request_data)
