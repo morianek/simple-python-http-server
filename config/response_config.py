@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-PATH_TO_HTTP = "html/"
+PATH_TO_HTTP = "tests/default_html/"
 DEFAULT_FILES = ["index.html", "lol.html"]
 NOT_FOUND_FILE = "error_404.html"
 INTERNAL_ERROR_FILE = "error_500.html"
