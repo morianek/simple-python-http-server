@@ -31,7 +31,7 @@ def verify_path(func):
     return wrapper
 
 @verify_path
-def get_specific_file_body(file_path: str) -> FileBody:
+def get_specific_file_body(file_path: str) -> FileBody | None:
     path = "./" + config.path_to_http_dir + file_path
     if os.path.isfile(path):
         with open(path, 'rb') as f:
@@ -39,7 +39,7 @@ def get_specific_file_body(file_path: str) -> FileBody:
 
         return FileBody(file_body, get_content_type_header(file_path))
     else:
-        return get_not_found_body()
+        return None
 
 
 def get_default_file_body() -> FileBody | None:

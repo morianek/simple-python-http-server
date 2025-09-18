@@ -15,6 +15,9 @@ def handle_request(request: Request) -> bytes:
         # TODO zrobienie wyszukiwarki plików jeżeli nie ma default body
     elif request.path.startswith("/"):
         file_body = get_specific_file_body(request.path[1:])
+        if file_body is None:
+            file_body = get_not_found_body()
+            return built_response(code=404, body=file_body.body, headers=file_body.body_type_header)
         return built_response(code=200, body=file_body.body, headers=file_body.body_type_header)
 
     else:
