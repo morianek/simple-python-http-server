@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 class Request:
     def __init__(self, method: str, path: str, headers: dict, body: str, get_params: dict | None):
         self.method = method
@@ -34,7 +37,7 @@ def parse_request(data: str) -> Request | None:
         return Request(method, path, headers, body, get_params)
 
     except Exception as e:
-        print(f"Exception {e} occurred")
+        logger.error(f"Exception {e} occurred during parsing request")
         return None
 
 def parse_get_params(path: str) -> dict | None:
