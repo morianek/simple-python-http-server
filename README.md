@@ -38,7 +38,7 @@ By default, the server will start on `http://localhost:8888`. You can access you
 
 ## Configuration
 
-You can configure the server by modifying either `config/server_config.py` or `config/response_config.py` file. Here are some common configurations:
+You can customize the server settings by modifying the `sites/default` file
 
 - **Port**: Change the port number by modifying the `PORT` variable.
 - **Document Root**: Set the directory from which files will be served by modifying the `DOCUMENT_ROOT` variable.

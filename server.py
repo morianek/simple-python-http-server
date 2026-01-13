@@ -2,7 +2,7 @@ import socket
 import logging
 
 from parsers import parse_request
-from config import setup, server_config
+from config import setup
 from request_handler import handle_request
 
 setup('sites/default')
