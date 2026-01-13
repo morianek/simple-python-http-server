@@ -1,7 +1,7 @@
 import logging
 import logging.config
 
-LOGGING_CONFIG = {
+logging_default_conf = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
@@ -13,7 +13,6 @@ LOGGING_CONFIG = {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "standard",
-            "level": "INFO",
             "stream": "ext://sys.stdout"
         },
         "file": {
@@ -25,10 +24,17 @@ LOGGING_CONFIG = {
     },
     "root": {
         "handlers": ["console", "file"],
-        "level": "DEBUG",
+        "level": "INFO",
     },
 }
 
 
-def setup_logging():
-    logging.config.dictConfig(LOGGING_CONFIG)
+def setup_logging(config: dict | None = None):
+    logging_conf = logging_default_conf.copy()
+    if config and config.get("logging"):
+        if config["logging"].get("output_file"):
+            logging_conf['handlers']['file']['filename'] = config["logging"]["output_file"]
+        if config["logging"].get("level"):
+            logging_conf['root']['level'] = config["logging"]["level"]
+
+    logging.config.dictConfig(logging_conf)

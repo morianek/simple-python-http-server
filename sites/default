@@ -1,0 +1,17 @@
+{
+    "root_directory": "www/html/",
+    "server": {
+          "host": "localhost",
+          "port": 8080
+    },
+    "files": {
+        "dafault_pages": ["index.html", "index.htm"],
+        "bad_request_page": "400.html",
+        "not_found_page": "404.html",
+        "internal_error_page": "500.html"
+    },
+    "logging": {
+        "level": "DEBUG",
+        "file": "server.log"
+    }
+}
